@@ -3,39 +3,25 @@
 <head>
 <title>Candy Crush Custom Level!!</title>
 <style>
-
-     
 body {
-  background-image: url('bg.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-}
-
-
-
-#flash {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    background: no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('bg.png'); /* Specify your single background image */
 }
 </style>
 <script>
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    document.body.style.backgroundImage = `url('${getRandomBackground()}')`;
-});
-
 window.getLevelCode = function() {
     console.log("GetLevelCode");
     return decodeURIComponent(location.search.split("levelCode=")[1].split("&")[0]).replaceAll("\"","&quot;");
 };
-const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('levelCode')) {
-            let levelCode = decodeURIComponent(urlParams.get('levelCode'));
-            levelCode = levelCode.replace(/"maxNumIngredientsOnScreen":0,\s*/, '');
-            urlParams.set('levelCode', encodeURIComponent(levelCode));
-        }
-    
+
 function callGetLevelCode() {
     var flashElement = document.getElementById("flash");
     try {
@@ -43,11 +29,11 @@ function callGetLevelCode() {
             flashElement.getLevelCode(decodeURIComponent(location.search.split("levelCode=")[1].split("&")[0]));
         } else {
             console.error("getLevelCode is not a function on flash element");
-            setTimeout(callGetLevelCode, 100);
+            setTimeout(callGetLevelCode, 100); // Retry after 100ms
         }
     } catch (e) {
         console.error("Error calling getLevelCode: ", e);
-        setTimeout(callGetLevelCode, 100);
+        setTimeout(callGetLevelCode, 100); // Retry after 100ms
     }
 }
 
