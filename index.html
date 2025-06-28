@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Candy Crush Custom Level!!</title>
+<style>
+
+     
+body {
+  background-image: url('bg.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+
+
+#flash {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+</style>
+<script>
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.body.style.backgroundImage = `url('${getRandomBackground()}')`;
+});
+
+window.getLevelCode = function() {
+    console.log("GetLevelCode");
+    return decodeURIComponent(location.search.split("levelCode=")[1].split("&")[0]).replaceAll("\"","&quot;");
+};
+const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('levelCode')) {
+            let levelCode = decodeURIComponent(urlParams.get('levelCode'));
+            levelCode = levelCode.replace(/"maxNumIngredientsOnScreen":0,\s*/, '');
+            urlParams.set('levelCode', encodeURIComponent(levelCode));
+        }
+    
+function callGetLevelCode() {
+    var flashElement = document.getElementById("flash");
+    try {
+        if (flashElement && typeof flashElement.getLevelCode === "function") {
+            flashElement.getLevelCode(decodeURIComponent(location.search.split("levelCode=")[1].split("&")[0]));
+        } else {
+            console.error("getLevelCode is not a function on flash element");
+            setTimeout(callGetLevelCode, 100);
+        }
+    } catch (e) {
+        console.error("Error calling getLevelCode: ", e);
+        setTimeout(callGetLevelCode, 100);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(callGetLevelCode, 100);
+});
+</script>
+</head>
+<body>
+<center>
+    <embed id="flash" src="ccgame_levelLoader.swf" type="application/x-shockwave-flash" width="755" height="600">
+</center>
+</body>
+</html>
